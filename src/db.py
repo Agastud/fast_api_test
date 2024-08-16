@@ -1,11 +1,13 @@
-from collections.abc import Generator
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-engine = create_engine('postgresql://postgres:123456@localhost:5432/postgres')
+from src.config import Settings
+
+settings = Settings()
+
+engine = create_engine(str(settings.postgres_url))
 
 
-def get_session() -> Generator:
+def get_session() -> Session:
     with Session(engine) as session:
         yield session

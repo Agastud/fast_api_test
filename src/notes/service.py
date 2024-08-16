@@ -1,8 +1,7 @@
 from sqlalchemy.orm import Session
 
 from src.notes.models import NoteModel
-from src.notes.note_not_found_exception import NoteNotFoundException
-from src.notes.schemes import NoteScheme, CreateNoteRequest
+from src.notes.schemes import CreateNoteRequest, NoteScheme
 
 
 class NoteService:
@@ -21,4 +20,3 @@ class NoteService:
         session.refresh(note_model)
 
         return NoteScheme.from_orm(note_model)
-
