@@ -26,4 +26,4 @@ class NoteModel(Base):
     updated_at: Mapped[datetime | None] = mapped_column(sa.DateTime())
 
     def __repr__(self) -> str:
-        return f'User(id={self.id}, 'f'title={self.title}, 'f'content={self.content}), 'f'created_at={self.created_at}, 'f'updated_at={self.updated_at}'
+        return f'User(id={self.id}, ' f'title={self.title}, ' f'content={self.content}), ' f'created_at={self.created_at}, ' f'updated_at={self.updated_at}'

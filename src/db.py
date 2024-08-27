@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -8,6 +10,14 @@ settings = Settings()
 engine = create_engine(str(settings.postgres_url))
 
 
+@contextmanager
 def get_session() -> Session:
-    with Session(engine) as session:
+    session: Session = Session(engine)
+    try:
         yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()

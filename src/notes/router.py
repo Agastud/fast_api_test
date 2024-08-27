@@ -1,21 +1,18 @@
 from http import HTTPStatus
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from src.db import get_session
+from src.notes.schemes import CreateNoteRequest, NoteScheme
 from src.notes.service import NoteService
-
-from .schemes import CreateNoteRequest, NoteScheme
 
 router = APIRouter(prefix='/notes', tags=['notes'])
 
 
 @router.get('/')
-def find_all_notes(session: Session = Depends(get_session)) -> list[NoteScheme]:
-    return NoteService.find_all_notes(session)
+def find_all_notes() -> list[NoteScheme]:
+    return NoteService.find_all_notes()
 
 
 @router.post('/', status_code=HTTPStatus.CREATED)
-def save_note(request: CreateNoteRequest, session: Session = Depends(get_session)) -> None:
-    NoteService.save_note(session, request)
+def save_note(request: CreateNoteRequest) -> NoteScheme:
+    return NoteService.save_note(request)
