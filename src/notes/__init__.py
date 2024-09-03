@@ -1,1 +1,1 @@
-from .router import router
+from src.notes.router import router

@@ -1,19 +1,24 @@
-from dataclasses import dataclass
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-@dataclass
-class Note(BaseModel):
+
+class NoteScheme(BaseModel):
     id: int
     title: str
     content: str
     created_at: datetime
     updated_at: datetime
 
-@dataclass
+    class Config:
+        from_attributes = True
+
+
 class CreateNoteRequest(BaseModel):
     title: str
     content: str
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime | None = None
+
+    class Config:
+        from_attributes = True

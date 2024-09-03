@@ -1,9 +1,23 @@
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-engine = create_engine('postgres')
+from src.config import Settings
+
+settings = Settings()
+
+engine = create_engine(str(settings.postgres_url))
 
 
-def get_session():
-    with Session(engine) as session:
+@contextmanager
+def get_session() -> Session:
+    session: Session = Session(engine)
+    try:
         yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
